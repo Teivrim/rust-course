@@ -1,0 +1,7 @@
+# Закрепляем тулчейн: MSVC здесь НЕ собирает (нет Visual Studio Build Tools),
+# поэтому gnu + MinGW — единственный рабочий вариант. Не переключай, иначе сборка
+# упадёт на этапе линковки, и ты потратишь час на ловлю ошибок.
+[toolchain]
+channel = "stable-x86_64-pc-windows-gnu"
+components = ["rustfmt", "clippy"]
+profile = "default"

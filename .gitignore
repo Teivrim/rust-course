@@ -1,0 +1,76 @@
+﻿# build
+build/
+Build/
+out/
+dist/
+target/
+bin/
+obj/
+*.o
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+*.dylib
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeUserPresets.json
+_deps/
+FetchContent/
+
+# Unreal
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+*.uasset
+*.umap
+
+# Java
+.classpath
+.project
+.settings/
+target/
+*.class
+*.jar
+
+# Rust
+**/*.rs.bk
+
+# editors / OS
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.swp
+*~
+*.tmp
+*.bak
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# logs
+*.log
+scan_log_*.txt
+
+# secrets — никогда не коммитить
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.keystore
+id_rsa*
+
+# локальный пайплайн
+OUT_*

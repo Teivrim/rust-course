@@ -1,0 +1,156 @@
+# Автономный воркспейс: метаданные и профили вынесены из корня исходного
+# моно-репозитория, чтобы курс собирался копированием одной папки.
+[workspace]
+resolver = "3"
+members = ["."]
+
+[package]
+name = "curriculum"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Профили. Обучение требует тонкой настройки, иначе выводы будут ложными:
+#
+#   dev      — opt-level 1. Компилируется за секунды, но уже без дыр в
+#              скорости. Если бы стоял opt-level 0, модули 13 и 16
+#              (производительность и бенчмарки) меряли бы компилятор,
+#              а не твой код.
+#   release  — как в бою. `overflow-checks` и `debug-assertions` выключены:
+#              в release переполнение i32 НЕ паникует, а тихо заворачивается.
+#   test     — профили тестов наследуют dev, но с opt-level 2: иначе
+#              property-тесты из модуля 16 идут вечность.
+# ─────────────────────────────────────────────────────────────────────────────
+[profile.dev]
+opt-level = 1
+debug = 1
+
+[profile.release]
+opt-level = 3
+# НЕ ставь здесь panic = "abort": харнесс из src/harness.rs ловит панику
+# `todo!`-заданий через catch_unwind. С abort первое же незакрытое задание
+# уронит всю программу.
+debug = 0
+
+[profile.test]
+opt-level = 2
+
+# Фичи учебного курса. Их суть — в модуле 10: `#[cfg(feature = "...")]`
+# меняет КОД, но не добавляет зависимость. Попробуй:
+#   cargo run --bin module10
+#   cargo run --bin module10 --features hot-reload
+[features]
+default = []
+hot-reload = []
+
+# ─────────────────────────────────────────────────────────────────────────────
+# НАМЕРЕННО НЕТ ЗАВИСИМОСТЕЙ. Всё на чистом std.
+#
+# В реальном движке тебе понадобятся crates, и вот они (их нет в этом
+# репозитории только потому, что здесь нет доступа к сети):
+#
+#   thiserror  -> написать derive руками             (Модуль 07)
+#   anyhow     -> DynError + контекст               (Модуль 07)
+#   glam       -> Vec3/Mat4/Quat                      (Модуль 19, пишем сами)
+#   bytemuck   -> безопасный cast в &[u8]            (Модуль 12/19, пишем сами)
+#   serde      -> Serialize/Deserialize              (Модуль 17, пишем сами)
+#   ash        -> биндинги Vulkan                    (Модуль 18, пишем сами)
+#   rayon      -> parallel iterators                 (Модуль 15, упрощаем)
+#   criterion  -> бенчмарки                          (Модуль 16, упрощаем)
+#   proptest   -> property-based тесты               (Модуль 16, упрощаем)
+#   parking_lot -> Mutex без poisoning               (Модуль 08/15)
+#
+# Изучать язык поверх сети зависимостей — значит не изучать его.
+# ─────────────────────────────────────────────────────────────────────────────
+
+[lib]
+name = "curriculum"
+path = "src/lib.rs"
+
+# 20 модулей = 20 бинарников. Причины в комментариях ниже по каждому [[bin]]:
+#   1. Ошибка в модуле 7 не блокирует запуск модуля 8. Учишься каждый день.
+#   2. `cargo run --bin module07` запускает ровно один модуль: модуль = программа.
+#   3. В модуле нельзя спрятаться за `use super::*` — видно ровно то, что знаешь.
+#   4. Каждый модуль = отдельная программа, поэтому нельзя "сделать всё pub" —
+#      корень модуля и есть граница.
+[[bin]]
+name = "module01"
+path = "src/bin/module01.rs"
+
+[[bin]]
+name = "module02"
+path = "src/bin/module02.rs"
+
+[[bin]]
+name = "module03"
+path = "src/bin/module03.rs"
+
+[[bin]]
+name = "module04"
+path = "src/bin/module04.rs"
+
+[[bin]]
+name = "module05"
+path = "src/bin/module05.rs"
+
+[[bin]]
+name = "module06"
+path = "src/bin/module06.rs"
+
+[[bin]]
+name = "module07"
+path = "src/bin/module07.rs"
+
+[[bin]]
+name = "module08"
+path = "src/bin/module08.rs"
+
+[[bin]]
+name = "module09"
+path = "src/bin/module09.rs"
+
+[[bin]]
+name = "module10"
+path = "src/bin/module10.rs"
+
+[[bin]]
+name = "module11"
+path = "src/bin/module11.rs"
+
+[[bin]]
+name = "module12"
+path = "src/bin/module12.rs"
+
+[[bin]]
+name = "module13"
+path = "src/bin/module13.rs"
+
+[[bin]]
+name = "module14"
+path = "src/bin/module14.rs"
+
+[[bin]]
+name = "module15"
+path = "src/bin/module15.rs"
+
+[[bin]]
+name = "module16"
+path = "src/bin/module16.rs"
+
+[[bin]]
+name = "module17"
+path = "src/bin/module17.rs"
+
+[[bin]]
+name = "module18"
+path = "src/bin/module18.rs"
+
+[[bin]]
+name = "module19"
+path = "src/bin/module19.rs"
+
+[[bin]]
+name = "module20"
+path = "src/bin/module20.rs"
