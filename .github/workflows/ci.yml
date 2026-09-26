@@ -1,0 +1,61 @@
+﻿# ── rust-course ──────────────────────────────────────────────────────────
+# rust-toolchain.toml закрепляет gnu-хост, потому что локально MSVC не
+# собирает. На CI это не нужно: C-ядра в проекте нет, поэтому берём
+# стандартный stable (msvc-хост) и обходим rust-toolchain.toml флагом +stable.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: 20 модулей собираются и запускаются
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Установить Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      # +stable перекрывает закрепление в rust-toolchain.toml
+      - name: Сборка всех 20 бинарников
+        run: cargo +stable build --release --bins
+
+      - name: clippy
+        run: cargo +stable clippy --release -- -D warnings
+
+      - name: Формат
+        run: cargo +stable fmt --check
+
+      # Смоук: каждый модуль обязан стартовать. Первый может падать на
+      # todo!(), поэтому проверяем код возврата и не падаем на первом.
+      - name: Смоук всех модулей
+        shell: pwsh
+        run: |
+          $fail = @()
+          1..20 | ForEach-Object {
+            $n = $_.ToString("00")
+            $exe = "target\release\module$n.exe"
+            if (-not (Test-Path $exe)) { $fail += "module$n: нет бинарника"; return }
+            $p = Start-Process -FilePath $exe -NoNewWindow -PassThru `
+                 -RedirectStandardOutput "out-$n.txt" -RedirectStandardError "err-$n.txt"
+            if (-not $p.WaitForExit(30000)) {
+              $p.Kill(); $fail += "module$n: завис"
+            } elseif ($p.ExitCode -ne 0) {
+              $fail += "module$n: код $($p.ExitCode)"
+            }
+          }
+          if ($fail) {
+            "Модули с проблемами:"
+            $fail | ForEach-Object { "  $_" }
+            exit 1
+          }
+          "Все 20 модулей собрались и отработали."
