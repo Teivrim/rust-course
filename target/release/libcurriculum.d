@@ -1,0 +1,1 @@
+D:\SOOBSHESTVA\AUTOMATIC\Many\products\rust-course\target\release\libcurriculum.rlib: D:\SOOBSHESTVA\AUTOMATIC\Many\products\rust-course\src\alloc.rs D:\SOOBSHESTVA\AUTOMATIC\Many\products\rust-course\src\harness.rs D:\SOOBSHESTVA\AUTOMATIC\Many\products\rust-course\src\lib.rs D:\SOOBSHESTVA\AUTOMATIC\Many\products\rust-course\src\rng.rs

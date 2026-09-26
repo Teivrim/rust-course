@@ -1,76 +1,90 @@
-﻿# build
-build/
-Build/
-out/
-dist/
-target/
-bin/
-obj/
+﻿# ── Сборка: только в корне ────────────────────────────────────────────────
+# Ведущий слэш обязателен. Без него `bin/` вырезал src/bin/ вместе с
+# исходниками, а `build/` — вложенные каталоги сборки.
+/build/
+/Build/
+/out/
+/dist/
+/target/
+/bin/
+/obj/
+/x64/
+/x86/
+/Debug/
+/Release/
+/logs/
+
+# ── CMake ──────────────────────────────────────────────────────────────────
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/CMakeUserPresets.json
+/_deps/
+/FetchContent/
+/compile_commands.json
+
+# ── Unreal ─────────────────────────────────────────────────────────────────
+/Binaries/
+/Intermediate/
+/DerivedDataCache/
+/Saved/
+
+# ── Компиляция ────────────────────────────────────────────────────────────
+# Эти расширения режутся ТОЛЬКО вне каталога lib/ и third_party/:
+# вендорённые import-библиотеки и заголовки — часть исходников.
+/*.exe
+/*.dll
+/*.lib
+/*.a
+/*.o
+/*.obj
+/*.pdb
 *.o
 *.obj
 *.pdb
 *.ilk
 *.exp
-*.exe
-*.dll
-*.lib
-*.a
-*.so
-*.dylib
-
-# CMake
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-CMakeUserPresets.json
-_deps/
-FetchContent/
-
-# Unreal
-Binaries/
-Intermediate/
-DerivedDataCache/
-Saved/
-*.uasset
-*.umap
-
-# Java
-.classpath
-.project
-.settings/
-target/
+*.pyc
 *.class
 *.jar
+*.apk
+*.unity
+*.meta
 
-# Rust
-**/*.rs.bk
-
-# editors / OS
-.vs/
-.vscode/
-.idea/
-*.user
-*.suo
+# ── VCS и редакторы ───────────────────────────────────────────────────────
+/.git
+/.vs/
+/.vscode/
+/.idea/
+/*.user
+/*.suo
 *.swp
 *~
-*.tmp
 *.bak
+*.tmp
+*.orig
+*.rej
 Thumbs.db
 Desktop.ini
 .DS_Store
 
-# logs
+# ── Логи ──────────────────────────────────────────────────────────────────
 *.log
-scan_log_*.txt
+/scan_log_*.txt
 
-# secrets — никогда не коммитить
+# ── Секреты: никогда не коммитить ─────────────────────────────────────────
 .env
 .env.*
 *.pem
 *.key
 *.pfx
 *.keystore
-id_rsa*
+/id_rsa*
+/application-local.yml
 
-# локальный пайплайн
-OUT_*
+# ── Служебные файлы пайплайна ─────────────────────────────────────────────
+# README.original.md и README.public.md — артефакты генерации каталога.
+# В публичном репозитории они не нужны и выглядят как мусор: старый
+# продающий текст лежит рядом с новым.
+/README.original.md
+/README.public.md
